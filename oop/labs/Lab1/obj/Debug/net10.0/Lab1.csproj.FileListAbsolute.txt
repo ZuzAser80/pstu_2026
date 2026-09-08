@@ -1,0 +1,14 @@
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/bin/Debug/net10.0/Lab1
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/bin/Debug/net10.0/Lab1.deps.json
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/bin/Debug/net10.0/Lab1.runtimeconfig.json
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/bin/Debug/net10.0/Lab1.dll
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/bin/Debug/net10.0/Lab1.pdb
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.GeneratedMSBuildEditorConfig.editorconfig
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.AssemblyInfoInputs.cache
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.AssemblyInfo.cs
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.csproj.CoreCompileInputs.cache
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.dll
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/refint/Lab1.dll
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.pdb
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/Lab1.genruntimeconfig.cache
+/home/admin-debian/pstu/oop/labs/lab1/Lab1/obj/Debug/net10.0/ref/Lab1.dll
