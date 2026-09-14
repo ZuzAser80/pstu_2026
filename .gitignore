@@ -8,3 +8,4 @@ obj/
 *.exe
 *.cache
 *.user
+.~lock*
