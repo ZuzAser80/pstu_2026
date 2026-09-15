@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Text.RegularExpressions;
 
+
 class Program
 {
     static void Main(string[] args)
@@ -24,6 +25,7 @@ class Program
         bool moreThenOneSentence = false;
         do
         {
+            
             if (choice == 2 && input == null)
             {
                 input = "В лесу родилась елочка. В лесу она росла. Зимой и летом стройная, зеленая была.";
