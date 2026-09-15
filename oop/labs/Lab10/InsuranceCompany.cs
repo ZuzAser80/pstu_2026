@@ -2,40 +2,58 @@ namespace Lab10
 {
     class InsuranceCompany : Organisation
     {
-        InsuranceType _insuranceType;
-        int _clientCount;
+        public InsuranceTypeEnum InsuranceType { get; private set; }
+        public int ClientCount { get; private set; }
         
         public InsuranceCompany() : base()
         {
-            _insuranceType = InsuranceType.NONE;
-            _clientCount = 0;
+            InsuranceType = InsuranceTypeEnum.NONE;
+            ClientCount = 0;
         }
 
         public InsuranceCompany(string address, string name, int money,
-            InsuranceType insuranceType, int clients) : base(address, name, money)
+            InsuranceTypeEnum insuranceType, int clients) : base(address, name, money)
         {
-            _insuranceType = insuranceType;
-            _clientCount = clients;
+            InsuranceType = insuranceType;
+            ClientCount = clients;
         }
 
         public InsuranceCompany(InsuranceCompany mold) : base(mold)
         {
-            _insuranceType = mold._insuranceType;
-            _clientCount = mold._clientCount;
+            InsuranceType = mold.InsuranceType;
+            ClientCount = mold.ClientCount;
         }
 
         public override void Show()
         {
-            System.Console.WriteLine($"INSURANCE COMPANY: {Name} at {Address} earning {AnnualMoneyEarned}. \nInsurance type: {_insuranceType}, used by {_clientCount} people");                        
+            System.Console.WriteLine($"INSURANCE COMPANY: {Name} at {Address} earning {AnnualMoneyEarned}. \nInsurance type: {InsuranceType}, used by {ClientCount} people");                        
         }
 
         public override void Init()
         {            
             base.Init();
-            _insuranceType = InsuranceType.NONE;
-            _clientCount = 0;
+            InsuranceType = InsuranceTypeEnum.NONE;
+            ClientCount = 0;            
         }
+
+        public override void RandomInit()
+        {
+            base.RandomInit();
+            InsuranceType = (InsuranceTypeEnum)random.Next(0, 4);
+            ClientCount = random.Next(1, 15);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (base.Equals(obj))
+            {
+                return ((InsuranceCompany)obj).ClientCount == ClientCount 
+                &&  ((InsuranceCompany)obj).InsuranceType == InsuranceType;
+            }
+            return false;
+        }
+        
     }
 
-    public enum InsuranceType { NONE, CAR, HOUSE, HEALTH, LIFE };
+    public enum InsuranceTypeEnum { NONE, CAR, HOUSE, HEALTH, LIFE };
 }

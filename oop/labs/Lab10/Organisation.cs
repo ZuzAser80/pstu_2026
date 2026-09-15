@@ -23,7 +23,7 @@ namespace Lab10
         }
         public int AnnualMoneyEarned { get; private set; }
 
-        private Random _random = new();
+        protected Random random = new();
 
         #region Constructors    
         
@@ -69,7 +69,7 @@ namespace Lab10
         {
             Name = System.Guid.NewGuid().ToString();
             Address = System.Guid.NewGuid().ToString();
-            AnnualMoneyEarned = _random.Next(100, 10000);
+            AnnualMoneyEarned = random.Next(100, 10000);
         }
 
         public override bool Equals(object obj)
