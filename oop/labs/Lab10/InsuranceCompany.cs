@@ -5,7 +5,7 @@ namespace Lab10
         public InsuranceTypeEnum InsuranceType { get; private set; }
         public int ClientCount { get; private set; }
         public int InsuranceFund { get; private set; }
-        
+
         public InsuranceCompany() : base()
         {
             InsuranceType = InsuranceTypeEnum.NONE;
@@ -30,15 +30,15 @@ namespace Lab10
 
         public override void Show()
         {
-            System.Console.WriteLine($"INSURANCE COMPANY: {Name} at {Address} earning {AnnualMoneyEarned}. \nInsurance type: {InsuranceType}, used by {ClientCount} people, insurance fund: {InsuranceFund}");                        
+            System.Console.WriteLine($"INSURANCE COMPANY: {Name} at {Address} earning {AnnualMoneyEarned}. \nInsurance type: {InsuranceType}, used by {ClientCount} people, insurance fund: {InsuranceFund}");
         }
 
         public override void Init()
-        {            
+        {
             base.Init();
             InsuranceType = InsuranceTypeEnum.NONE;
             ClientCount = 0;
-            InsuranceFund = 0;            
+            InsuranceFund = 0;
         }
 
         public override void RandomInit()
@@ -53,13 +53,18 @@ namespace Lab10
         {
             if (base.Equals(obj))
             {
-                return ((InsuranceCompany)obj).ClientCount == ClientCount 
-                &&  ((InsuranceCompany)obj).InsuranceType == InsuranceType
+                return ((InsuranceCompany)obj).ClientCount == ClientCount
+                && ((InsuranceCompany)obj).InsuranceType == InsuranceType
                 && ((InsuranceCompany)obj).InsuranceFund == InsuranceFund;
             }
             return false;
         }
-        
+
+        public override object Clone()
+        {
+            return new InsuranceCompany(this);
+        }
+
     }
 
     public enum InsuranceTypeEnum { NONE, CAR, HOUSE, HEALTH, LIFE };

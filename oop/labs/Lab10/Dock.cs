@@ -58,6 +58,11 @@ class Dock : Organisation
         }
         return false;
     }
+
+    public override object Clone()
+    {
+        return new Dock(this);
+    }
 }
 
 public enum ShipTypeEnum { NONE, CARGO, TANKER, LUXURY, MILITARY, SAILBOAT };

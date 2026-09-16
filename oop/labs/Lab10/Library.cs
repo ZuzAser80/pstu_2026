@@ -59,6 +59,11 @@ namespace Lab10
             }
             return false;
         }
+
+        public override object Clone()
+        {
+            return new Library(this);
+        }
     }
 
     public enum BookGenresEnum { NONE, FICTION, TEXTBOOK, JOURNAL, SCIENCE };

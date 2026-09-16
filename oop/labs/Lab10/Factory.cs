@@ -59,6 +59,11 @@ namespace Lab10
             }
             return false;
         }
+
+        public override object Clone()
+        {
+            return new Factory(this);
+        }
     }
 
     public enum ProductTypeEnum { NONE, FOOD, CLOTHES, MACHINERY, CHEMICALS };
