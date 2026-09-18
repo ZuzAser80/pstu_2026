@@ -1,36 +1,37 @@
 ﻿using System;
 
-
-
 class Program
 {
     static void Main()
     {
         const double EPS = 1e-4;
+        const int N = 10, K = 10;
+        const double A = 0.1, B = 0.8;
 
-        int n = 10, k = 10, n1 = 1;
-        double y, x = 0, a = .1, b = .8, sn = 0, se = 0;
-        for (int j = 1; j <= k; j++)
+        for (int j = 0; j <= K; j++)
         {
-            x += (double)((b - a) / k);
-            double currentSN = (x * x) / 2, currentSE = (x * x) / 2;
+            double x = A + (B - A) * j / K;
 
-            for (int i = 1; i < n; i++)
+            double sn = 0, snNum = x * x;
+            for (int n = 1; n <= N; n++)
             {
-                sn += currentSN;
-                currentSN *= (-x * x) * (n * (2 * n - 1)) / ((n + 1) * (2 * n + 1));
+                sn += snNum / (2.0 * n * (2 * n - 1));
+                snNum *= -x * x;
             }
 
-            while (Math.Abs(currentSE) > EPS)
+            double se = 0, seNum = x * x;
+            int m = 1;
+            double term = seNum / (2.0 * m * (2 * m - 1));
+            while (Math.Abs(term) > EPS)
             {
-                se += currentSE;
-                currentSE *= (-x * x) * (n1 * (2 * n1 - 1)) / ((n1 + 1) * (2 * n1 + 1));
-                n1++;
+                se += term;
+                seNum *= -x * x;
+                m++;
+                term = seNum / (2.0 * m * (2 * m - 1));
             }
 
-            y = x * Math.Atan(x) - Math.Log(Math.Sqrt(1 + x * x));
-            System.Console.WriteLine($"X: {x}, SN: {sn}, SE: {se}, Y: {y}");
+            double y = x * Math.Atan(x) - Math.Log(Math.Sqrt(1 + x * x));
+            Console.WriteLine($"X: {x:F2}, SN: {sn:F4}, SE: {se:F4}, Y: {y:F4}");
         }
     }
-
 }
