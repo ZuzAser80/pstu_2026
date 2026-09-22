@@ -29,6 +29,7 @@ class Program
             if (choice == 2 && input == null)
             {
                 input = "В лесу родилась елочка. В лесу она росла. Зимой и летом стройная, зеленая была.";
+                System.Console.WriteLine($"Orig sentence: \n{input}");
             }
             else
             {
@@ -51,7 +52,7 @@ class Program
             var sentences = Regex.Split(input, @"(?<=[.!?])\s+");
             string result = "";
             result += sentences?[sentences.Count() - 1];
-            for (int i = 1; i <= sentences?.Count() - 2; i++)
+            for (int i = sentences.Count() - 2; i >= 1; i--)
             {
                 result += sentences?[i];
             }

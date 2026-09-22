@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.Contracts;
+using LabsUtil;
 
 class Program
 {
@@ -9,23 +10,23 @@ class Program
     static void Main(string[] args)
     {
         System.Console.WriteLine("1. Двумерные массивы \n 2. Рваные массивы");
-        int choice = ReadInput("?: ");
+        int choice = PstuUtil.TryReadT<int>("?: ");
         switch (choice)
         {
             case 1:
                 System.Console.WriteLine("1. Ввести вручную \n 2. Рандом \n 3. Добавить столбец \n 4. Выход");
-                choice = ReadInput("?: ");
+                choice = PstuUtil.TryReadT<int>("?: ");
                 int[,] currentArray = { };
                 int n;
                 switch (choice)
                 {
                     case 1:
-                        n = ReadInput("n: ");
+                        n = PstuUtil.TryReadT<int>("n: ");
                         currentArray = InputArray(new int[n, n]);
                         break;
                     case 2:
-                        n = ReadInput("n: ");
-                        currentArray = RandomArray(new int[ReadInput("n: "), ReadInput("m: ")]);
+                        n = PstuUtil.TryReadT<int>("n: ");
+                        currentArray = RandomArray(new int[PstuUtil.TryReadT<int>("n: "), PstuUtil.TryReadT<int>("m: ")]);
                         break;
                 }
                 System.Console.WriteLine("Before:");
@@ -36,37 +37,55 @@ class Program
                 break;
             case 2:
                 System.Console.WriteLine("1. Ввести вручную \n 2. Рандом \n 3. Добавить столбец \n 4. Выход");
-                choice = ReadInput("?: ");
+                choice = PstuUtil.TryReadT<int>("?: ");
                 int[][] currentJagged = { };
                 switch (choice)
                 {
                     case 1:
                         {
-                            n = ReadInput("n: ");
+                            n = PstuUtil.TryReadT<int>("n: ");
                             var jagged = new int[n][];
                             for (int i = 0; i < n; i++)
-                                jagged[i] = new int[ReadInput($"m[{i}]: ")];
+                                jagged[i] = new int[PstuUtil.TryReadT<int>($"m[{i}]: ")];
                             currentJagged = InputArray(jagged);
                             break;
                         }
                     case 2:
                         {
-                            n = ReadInput("n: ");
-                            int minLen = ReadInput("min length: ");
-                            int maxLen = ReadInput("max length: ");
+                            n = PstuUtil.TryReadT<int>("n: ");
+                            int minLen = PstuUtil.TryReadT<int>("min length: ");
+                            int maxLen = PstuUtil.TryReadT<int>("max length: ");
                             var jagged = new int[n][];
                             for (int i = 0; i < n; i++)
                                 jagged[i] = new int[_random.Next(minLen, maxLen + 1)];
                             currentJagged = RandomArray(jagged);
                             break;
                         }
+                    case 3:
+                        {
+                            n = PstuUtil.TryReadT<int>("n: ");
+                            var jagged = new int[n][];
+                            for (int i = 0; i < n; i++)
+                                jagged[i] = new int[PstuUtil.TryReadT<int>($"m[{i}]: ")];
+                            currentJagged = InputArray(jagged);
+                            break;
+                        }
                 }
                 System.Console.WriteLine("Before:");
                 PrintArray(currentJagged);
-                int k = ReadInput("k: ");
-                var jaggedAfter = RemoveAllKLines(currentJagged, k);
-                System.Console.WriteLine("After:");
-                PrintArray(jaggedAfter);
+                if (choice == 3)
+                {
+                    var jaggedWithCol = AddColumn(currentJagged);
+                    System.Console.WriteLine("After:");
+                    PrintArray(jaggedWithCol);
+                }
+                else
+                {
+                    int k = PstuUtil.TryReadT<int>("k: ");
+                    var jaggedAfter = RemoveAllKLines(currentJagged, k);
+                    System.Console.WriteLine("After:");
+                    PrintArray(jaggedAfter);
+                }
                 break;
         }
     }
@@ -75,16 +94,16 @@ class Program
     {
         for (int i = 0; i < arr.Length; i++)
             for (int j = 0; j < arr[i].Length; j++)
-                arr[i][j] = ReadInput($"a[{i},{j}]: ");
+                arr[i][j] = PstuUtil.TryReadT<int>($"a[{i},{j}]: ");
         return arr;
     }
 
     static int[][] RemoveAllKLines(int[][] arr, int k)
     {
         int[][] res = new int[0][];
-        bool containsK = false;
         for (int i = 0; i < arr.Length; i++)
         {
+            bool containsK = false;
             for (int j = 0; j < arr[i].Length; j++)
             {
                 if (arr[i][j] == k)
@@ -106,7 +125,7 @@ class Program
     {
         for (int i = 0; i < arr.GetLength(0); i++)
             for (int j = 0; j < arr.GetLength(1); j++)
-                arr[i, j] = ReadInput($"a[{i},{j}]: ");
+                arr[i, j] = PstuUtil.TryReadT<int>($"a[{i},{j}]: ");
         return arr;
     }
 
@@ -167,19 +186,5 @@ class Program
             arr[i] = newRow;
         }
         return arr;
-    }
-
-    static int ReadInput(string prompt)
-    {
-        int result;
-        bool isParsed;
-        do
-        {
-            System.Console.WriteLine(prompt);
-            isParsed = int.TryParse(System.Console.ReadLine(), out result);
-            if (!isParsed)
-                System.Console.WriteLine("Invalid number. Please enter an integer.");
-        } while (!isParsed);
-        return result;
     }
 }
