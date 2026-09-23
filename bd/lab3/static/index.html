@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Лабораторная работа 3 — table_bastrakov_lab2</title>
+<style>
+  body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; background: #f4f6f8; color: #222; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding: 24px; }
+  h1 { margin-top: 0; font-size: 22px; }
+  h2 { font-size: 16px; margin: 18px 0 8px; }
+  .buttons { display: flex; gap: 10px; margin: 16px 0; }
+  button {
+    padding: 10px 16px; font-size: 14px; cursor: pointer;
+    border: none; border-radius: 6px; color: #fff; background: #2563eb;
+  }
+  button:hover { filter: brightness(1.1); }
+  button.active { outline: 3px solid #1e40af; }
+  table { border-collapse: collapse; width: 100%; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,.12); }
+  th, td { border: 1px solid #d7dde3; padding: 8px 10px; text-align: left; font-size: 14px; }
+  th { background: #eef2f6; position: sticky; top: 0; }
+  tr:nth-child(even) { background: #fafbfc; }
+  .status { font-size: 14px; margin-bottom: 8px; color: #555; }
+  .error { color: #b91c1c; font-family: monospace; font-size: 13px; white-space: pre-wrap; }
+  .empty { color: #666; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Лабораторная работа 3</h1>
+  <p>Таблица <code>table_bastrakov_lab2</code> (БД <code>lab2</code>). Нажмите кнопку, чтобы выполнить запрос из лабораторной работы №2 и увидеть результат.</p>
+
+  <div class="buttons">
+    <button data-query="1">Запрос 1 — сотрудники, телефоны, ЗП</button>
+    <button data-query="2">Запрос 2 — сотрудники и адреса</button>
+    <button data-query="3">Запрос 3 — стаж более 4 лет</button>
+  </div>
+
+  <div id="status" class="status"></div>
+  <div id="error" class="error"></div>
+  <div id="tables"></div>
+</div>
+
+<script>
+"use strict";
+
+const statusEl = document.getElementById("status");
+const errorEl = document.getElementById("error");
+const tablesEl = document.getElementById("tables");
+const buttons = document.querySelectorAll("button[data-query]");
+let current = null;
+
+function render(result, label) {
+  tablesEl.innerHTML = "";
+  errorEl.textContent = "";
+  statusEl.textContent = label;
+
+  const section = document.createElement("div");
+  const h2 = document.createElement("h2");
+  h2.textContent = label;
+  section.appendChild(h2);
+
+  if (!result.columns || result.rows.length === 0) {
+    const p = document.createElement("p");
+    p.className = "empty";
+    p.textContent = "Нет данных";
+    section.appendChild(p);
+    tablesEl.appendChild(section);
+    return;
+  }
+
+  const table = document.createElement("table");
+  const thead = document.createElement("thead");
+  const headRow = document.createElement("tr");
+  result.columns.forEach((col) => {
+    const th = document.createElement("th");
+    th.textContent = col;
+    headRow.appendChild(th);
+  });
+  thead.appendChild(headRow);
+  table.appendChild(thead);
+
+  const tbody = document.createElement("tbody");
+  result.rows.forEach((row) => {
+    const tr = document.createElement("tr");
+    row.forEach((value) => {
+      const td = document.createElement("td");
+      td.textContent = value;
+      tr.appendChild(td);
+    });
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  section.appendChild(table);
+  tablesEl.appendChild(section);
+}
+
+async function fetchJson(url) {
+  const resp = await fetch(url);
+  const payload = await resp.json().catch(() => null);
+  if (!resp.ok) {
+    const detail = payload && payload.detail ? payload.detail : "HTTP " + resp.status;
+    throw new Error(detail);
+  }
+  return payload;
+}
+
+async function showError(err) {
+  statusEl.textContent = "";
+  tablesEl.innerHTML = "";
+  errorEl.textContent = "Ошибка: " + err.message;
+}
+
+async function loadBaseTable() {
+  try {
+    const data = await fetchJson("/api/table");
+    render(data, "Таблица table_bastrakov_lab2 (все строки)");
+  } catch (err) {
+    await showError(err);
+  }
+}
+
+buttons.forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    buttons.forEach((b) => b.classList.remove("active"));
+    btn.classList.add("active");
+    await loadQuery(btn.dataset.query);
+  });
+});
+
+async function loadQuery(n) {
+  try {
+    const data = await fetchJson("/api/query/" + n);
+    current = n;
+    render(data, "Результат запроса " + n);
+  } catch (err) {
+    await showError(err);
+  }
+}
+
+loadBaseTable();
+</script>
+</body>
+</html>
