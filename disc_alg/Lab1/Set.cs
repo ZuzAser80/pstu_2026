@@ -111,7 +111,10 @@ public class Set
         int k = 0;
         for (int i = 0; i < universal._elements.Length; i++)
         {
-            if (!Contains(universal._elements[i])) result[k++] = universal._elements[i];
+            if (!Contains(universal._elements[i]))
+            {
+                result[k++] = universal._elements[i];
+            }
         }
         return new Set(result);
     }
@@ -120,7 +123,10 @@ public class Set
     {
         for (int i = 0; i < _elements.Length; i++)
         {
-            if (!other.Contains(_elements[i])) return false;
+            if (!other.Contains(_elements[i]))
+            {
+                return false;
+            }
         }
         return true;
     }

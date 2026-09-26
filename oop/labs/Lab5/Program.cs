@@ -9,12 +9,12 @@ class Program
 
     static void Main(string[] args)
     {
-        System.Console.WriteLine("1. Двумерные массивы \n 2. Рваные массивы");
+        System.Console.WriteLine("1. Двумерные массивы \n2. Рваные массивы");
         int choice = PstuUtil.TryReadT<int>("?: ");
         switch (choice)
         {
             case 1:
-                System.Console.WriteLine("1. Ввести вручную \n 2. Рандом \n 3. Добавить столбец \n 4. Выход");
+                System.Console.WriteLine("1. Ввести вручную \n2. Рандом \n3. Добавить столбец \n4. Выход");
                 choice = PstuUtil.TryReadT<int>("?: ");
                 int[,] currentArray = { };
                 int n;
@@ -36,7 +36,7 @@ class Program
                 PrintArray(rectArrAfter);
                 break;
             case 2:
-                System.Console.WriteLine("1. Ввести вручную \n 2. Рандом \n 3. Добавить столбец \n 4. Выход");
+                System.Console.WriteLine("1. Ввести вручную \n2. Рандом \n3. Добавить столбец \n4. Выход");
                 choice = PstuUtil.TryReadT<int>("?: ");
                 int[][] currentJagged = { };
                 switch (choice)
