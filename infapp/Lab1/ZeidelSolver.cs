@@ -9,7 +9,7 @@ static class ZeidelSolver
 {
     private const int TransitionDigits = 4;
     private const int SolutionDigits = 8;
-    private const int MaxIterations = 100000;
+    private const int MaxIterations = 1000;
 
     public static double[]? Solve(LinearSystem system, double epsilon)
     {
@@ -98,7 +98,7 @@ static class ZeidelSolver
         text.Append(' ').Append(NumberFormat.Cells(x, SolutionDigits));
         if (hasDelta)
         {
-            text.Append(' ').Append(NumberFormat.Cell(maxDelta, 10));
+            text.Append(' ').Append(NumberFormat.Cell(maxDelta, 5));
         }
         return text.ToString();
     }

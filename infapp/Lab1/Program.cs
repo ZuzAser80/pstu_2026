@@ -1,5 +1,5 @@
 ﻿using System;
-using LabsUtil;
+using System.Globalization;
 
 // Лабораторная работа №1. Методы решения систем линейных алгебраических уравнений.
 // Задание 1 — метод Гаусса с выбором главных элементов.
@@ -15,6 +15,10 @@ class Program
         Console.WriteLine();
 
         var system = ReadSystem();
+        if (system == null)
+        {
+            return;
+        }
         Console.WriteLine();
         system.Print("Исходная система:");
         Console.WriteLine();
@@ -66,29 +70,74 @@ class Program
             + NumberFormat.Format(difference, 10));
     }
 
-    // Универсальный ввод данных: система варианта 4 или произвольная система
-    private static LinearSystem ReadSystem()
+    // Чтение системы из файла input.txt в текущей папке.
+    // Каждая непустая строка файла — одно уравнение: n коэффициентов и свободный член,
+    // записанные через пробел, например "9.1 5.6 7.8 9.8".
+    // Возвращает null, если файл отсутствует или не разобран.
+    private static LinearSystem? ReadSystem()
     {
-        Console.WriteLine("1 : система варианта 4");
-        Console.WriteLine("2 : ввести свою систему");
-        var choice = PstuUtil.TryReadT<int>("выберите исходную систему: ");
-        if (choice == 1)
+        const string fileName = "input.txt";
+        if (!File.Exists(fileName))
         {
-            return LinearSystem.CreateVariant4();
+            Console.WriteLine("Файл " + fileName + " не найден в текущей папке.");
+            Console.WriteLine("Программа читает систему из файла: создайте " + fileName
+                + " с коэффициентами и свободными членами по одному уравнению в строке.");
+            return null;
         }
 
-        var size = PstuUtil.TryReadT<int>("число уравнений n: ", 1, 6);
-        var coefficients = new double[size, size];
-        var rightParts = new double[size];
-        for (var row = 0; row < size; row++)
+        var rows = new List<double[]>();
+        var lines = File.ReadAllLines(fileName);
+        for (var i = 0; i < lines.Length; i++)
         {
-            for (var column = 0; column < size; column++)
+            if (string.IsNullOrWhiteSpace(lines[i]))
             {
-                coefficients[row, column] = PstuUtil.TryReadT<double>("a" + (row + 1) + (column + 1) + " = ");
+                continue;
             }
-            rightParts[row] = PstuUtil.TryReadT<double>("b" + (row + 1) + " = ");
+            var row = ParseRow(lines[i], i + 1);
+            if (row == null)
+            {
+                return null;
+            }
+            rows.Add(row);
         }
-        return new LinearSystem(coefficients, rightParts);
+
+        if (rows.Count == 0)
+        {
+            Console.WriteLine("Файл " + fileName + " пуст: система не задана.");
+            return null;
+        }
+
+        // Система из n уравнений: каждая строка должна содержать n коэффициентов
+        // и свободный член
+        var expected = rows.Count + 1;
+        for (var row = 0; row < rows.Count; row++)
+        {
+            if (rows[row].Length != expected)
+            {
+                Console.WriteLine("Строка " + (row + 1) + " файла " + fileName + " содержит "
+                    + rows[row].Length + " чисел, а система из " + rows.Count
+                    + " уравнений требует " + expected + " (n коэффициентов и свободный член).");
+                return null;
+            }
+        }
+        return LinearSystem.FromRows(rows.ToArray());
+    }
+
+    // Разбор строки файла в расширенную строку системы, null при ошибке
+    private static double[]? ParseRow(string line, int lineNumber)
+    {
+        var parts = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
+        var row = new double[parts.Length];
+        for (var i = 0; i < parts.Length; i++)
+        {
+            if (!double.TryParse(parts[i], NumberStyles.Float, CultureInfo.InvariantCulture, out row[i]))
+            {
+                Console.WriteLine("Строка " + lineNumber + " файла input.txt: "
+                    + "\"" + parts[i] + "\" не является числом.");
+                return null;
+            }
+        }
+        return row;
     }
 
     private static void PrintSolution(string title, double[] solution)
