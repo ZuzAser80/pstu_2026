@@ -18,8 +18,7 @@ public class PstuUtil
         return res;
     } 
     public static T TryReadT<T>(string prompt, T min_allowed, T max_allowed) where T : IParsable<T>, IComparable
-    {
-        System.Console.WriteLine(prompt);
+    {        
         T res;
         bool isValid;
         do

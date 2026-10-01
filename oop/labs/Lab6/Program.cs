@@ -41,13 +41,11 @@ class Program
                 continue;
             }
             var sentences = Regex.Split(input, @"(?<=[.!?])\s+");
-            string result = "";
-            result += sentences?[sentences.Count() - 1];
-            for (int i = sentences.Count() - 2; i >= 1; i--)
-            {
-                result += sentences?[i];
-            }
-            result += sentences?[0];               
+            string[] reorderedSentences = new string[sentences.Length];
+            reorderedSentences[0] = sentences[^1];
+            for (int i = 1; i < sentences.Length; i++)
+                reorderedSentences[i] = sentences[sentences.Length - i - 1];
+            string result = string.Join(" ", reorderedSentences);
             System.Console.WriteLine($"result: {result}");
         } while (!isNotNull || !moreThenOneSentence);      
     }
