@@ -1,7 +1,7 @@
 /// <summary>
 /// burmalda
 /// </summary>
-interface IInit
+public interface IInit
 {
     void Init();
     void RandomInit();

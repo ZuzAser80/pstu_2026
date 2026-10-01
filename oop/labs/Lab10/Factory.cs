@@ -1,6 +1,6 @@
 namespace Lab10
 {
-    class Factory : Organisation
+    public class Factory : Organisation
     {
         public ProductTypeEnum ProductType { get; private set; }
         public int WorkerCount { get; private set; }

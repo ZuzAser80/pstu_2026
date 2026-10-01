@@ -1,6 +1,6 @@
 namespace Lab10
 {
-    class Library : Organisation
+    public class Library : Organisation
     {
         public BookGenresEnum BookGenres { get; private set; }
         public int BookCount { get; private set; }

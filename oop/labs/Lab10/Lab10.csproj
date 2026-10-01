@@ -7,10 +7,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Util\Util.csproj" />
+    <Compile Remove="UnitTests\**" />
+    <None Remove="UnitTests\**" />
+    <EmbeddedResource Remove="UnitTests\**" />
   </ItemGroup>
+
   <ItemGroup>
-    <PackageReference Include="xunit" Version="2.9.3" />
+    <ProjectReference Include="..\..\Util\Util.csproj" />
   </ItemGroup>
 
 </Project>

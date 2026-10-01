@@ -1,6 +1,6 @@
 namespace Lab10
 {
-    class InsuranceCompany : Organisation
+    public class InsuranceCompany : Organisation
     {
         public InsuranceTypeEnum InsuranceType { get; private set; }
         public int ClientCount { get; private set; }

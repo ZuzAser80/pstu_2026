@@ -1,6 +1,6 @@
 namespace Lab10;
 
-class Dock : Organisation
+public class Dock : Organisation
 {
     public ShipTypeEnum ShipType { get; private set; }
     public int ShipsInDock { get; private set; }
