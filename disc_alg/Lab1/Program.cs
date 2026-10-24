@@ -193,12 +193,52 @@ class Program
 
     static void ReadRandom(int[] values, Set? universal)
     {
+        int size = values.Length;
         int[] pool = universal == null ? null : universal.Elements;
-        for (int i = 0; i < values.Length; i++)
+        if (pool == null || pool.Length == 0)
         {
-            values[i] = (pool == null || pool.Length == 0)
-                ? _rnd.Next(100000)
-                : pool[_rnd.Next(pool.Length)];
+            int i = 0;
+            while (i < size)
+            {
+                int v = _rnd.Next(100000);
+                bool exists = false;
+                for (int j = 0; j < i; j++)
+                {
+                    if (values[j] == v)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+                if (!exists)
+                {
+                    values[i++] = v;
+                }
+            }
+            return;
+        }
+        int idx = 0;
+        int limit = size < pool.Length ? size : pool.Length;
+        while (idx < limit)
+        {
+            int v = pool[_rnd.Next(pool.Length)];
+            bool exists = false;
+            for (int j = 0; j < idx; j++)
+            {
+                if (values[j] == v)
+                {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists)
+            {
+                values[idx++] = v;
+            }
+        }
+        for (int i = idx; i < size; i++)
+        {
+            values[i] = pool[_rnd.Next(pool.Length)];
         }
     }
 

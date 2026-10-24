@@ -33,3 +33,24 @@ public class PstuUtil
         return res;
     }
 }
+
+public class PstuMenu
+{
+    public PstuMenu(List<Tuple<String, List<MenuItem>>> tuples)
+    {
+        foreach (var a in tuples)
+        {
+            
+        }
+    }
+}
+
+public class MenuItem { 
+    public String content; 
+    public Action onSelect;
+    public MenuItem(String s, Action a)
+    {
+        content = s;
+        onSelect = a;
+    }
+ }

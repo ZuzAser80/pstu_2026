@@ -1,0 +1,15 @@
+\xpg@aux {}{russian}
+\contentsline {section}{\numberline {1}Постановка задачи}{2}{section.1}%
+\contentsline {section}{\numberline {2}Отделение корней}{2}{section.2}%
+\contentsline {section}{\numberline {3}Краткое описание методов}{4}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Метод половинного деления (дихотомии)}{4}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Метод хорд}{5}{subsection.3.2}%
+\contentsline {subsection}{\numberline {3.3}Метод касательных (Ньютона)}{6}{subsection.3.3}%
+\contentsline {subsection}{\numberline {3.4}Комбинированный метод хорд и касательных}{7}{subsection.3.4}%
+\contentsline {subsection}{\numberline {3.5}Метод простых итераций}{8}{subsection.3.5}%
+\contentsline {section}{\numberline {4}Проверка условий сходимости и выбор начального приближения}{9}{section.4}%
+\contentsline {section}{\numberline {5}Программная реализация}{10}{section.5}%
+\contentsline {section}{\numberline {6}Результаты вычислений}{11}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Сводная таблица и проверка подстановкой}{13}{subsection.6.1}%
+\contentsline {section}{\numberline {7}Обсуждение результатов}{14}{section.7}%
+\contentsline {section}{\numberline {A}Листинг программы}{15}{appendix.A}%

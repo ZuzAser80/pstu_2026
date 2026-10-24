@@ -29,14 +29,14 @@ class Program
                         currentArray = RandomArray(new int[PstuUtil.TryReadT<int>("n: "), PstuUtil.TryReadT<int>("m: ")]);
                         break;
                 }
-                System.Console.WriteLine("Before:");
+                Console.WriteLine("Before:");
                 PrintArray(currentArray);
                 var rectArrAfter = AddColumn(currentArray);
-                System.Console.WriteLine("After:");
+                Console.WriteLine("After:");
                 PrintArray(rectArrAfter);
                 break;
             case 2:
-                System.Console.WriteLine("1. Ввести вручную \n2. Рандом \n3. Добавить столбец \n4. Выход");
+                Console.WriteLine("1. Ввести вручную \n2. Рандом \n3. Добавить столбец \n4. Выход");
                 choice = PstuUtil.TryReadT<int>("?: ", 1, 3);
                 int[][] currentJagged = { };
                 switch (choice)
@@ -71,20 +71,17 @@ class Program
                             break;
                         }
                 }
-                System.Console.WriteLine("Before:");
-                PrintArray(currentJagged);
+                PrintArray(currentJagged, "Before");
                 if (choice == 3)
                 {
                     var jaggedWithCol = AddColumn(currentJagged);
-                    System.Console.WriteLine("After:");
-                    PrintArray(jaggedWithCol);
+                    PrintArray(jaggedWithCol, "After");
                 }
                 else
                 {
                     int k = PstuUtil.TryReadT<int>("k: ");
-                    var jaggedAfter = RemoveAllKLines(currentJagged, k);
-                    System.Console.WriteLine("After:");
-                    PrintArray(jaggedAfter);
+                    var jaggedAfter = RemoveAllKLines(currentJagged, k);                    
+                    PrintArray(jaggedAfter, "After:");
                 }
                 break;
         }
@@ -119,7 +116,8 @@ class Program
             }
         }
         return res;
-    }
+    }    
+    
 
     static int[,] InputArray(int[,] arr)
     {
@@ -155,8 +153,9 @@ class Program
         }
     }
 
-    static void PrintArray(int[][] arr)
+    static void PrintArray(int[][] arr, string prompt)
     {
+        Console.WriteLine(prompt);
         foreach (var row in arr)
         {
             foreach (int value in row)
