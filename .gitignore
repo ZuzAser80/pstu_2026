@@ -12,6 +12,10 @@ obj/
 *.cache
 *.user
 .~lock*
+*.toc
+*.aux
+*.log
+*.out
 
 # Test output
 TestResults/
