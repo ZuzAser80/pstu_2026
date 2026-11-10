@@ -1,6 +1,6 @@
 using System;
 
-public class Set
+public class Set : IEquatable<Set>
 {
     private readonly int[] _elements;
 
@@ -9,90 +9,35 @@ public class Set
         _elements = elements;
     }
 
-    public static Set Empty => new Set(new int[0]);
+    public static Set Empty => new Set(Array.Empty<int>());
 
     public static Set Of(int[] raw)
     {
-        int[] temp = new int[raw.Length];
-        int n = 0;
-        for (int i = 0; i < raw.Length; i++)
-        {
-            if (!Contains(temp, raw[i], n))
-            {
-                temp[n++] = raw[i];
-            }
-        }
-        int[] elements = new int[n];
-        for (int i = 0; i < n; i++)
-        {
-            elements[i] = temp[i];
-        }
-        return new Set(elements);
+        return new Set(Deduplicate(raw));
     }
 
     public int Count => _elements.Length;
 
-    public int[] Elements => _elements;
+    public int[] Elements => (int[])_elements.Clone();
 
     public bool Contains(int value)
     {
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            if (_elements[i] == value) return true;
-        }
-        return false;
+        return Array.IndexOf(_elements, value) >= 0;
     }
 
     public Set Intersect(Set other)
     {
-        int n = 0;
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            if (other.Contains(_elements[i])) n++;
-        }
-        int[] result = new int[n];
-        int k = 0;
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            if (other.Contains(_elements[i])) result[k++] = _elements[i];
-        }
-        return new Set(result);
+        return Filter(other.Contains);
     }
 
     public Set Union(Set other)
     {
-        int n = _elements.Length;
-        for (int i = 0; i < other._elements.Length; i++)
-        {
-            if (!Contains(other._elements[i])) n++;
-        }
-        int[] result = new int[n];
-        int k = 0;
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            result[k++] = _elements[i];
-        }
-        for (int i = 0; i < other._elements.Length; i++)
-        {
-            if (!Contains(other._elements[i])) result[k++] = other._elements[i];
-        }
-        return new Set(result);
+        return Concatenate(this, other.Difference(this));
     }
 
     public Set Difference(Set other)
     {
-        int n = 0;
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            if (!other.Contains(_elements[i])) n++;
-        }
-        int[] result = new int[n];
-        int k = 0;
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            if (!other.Contains(_elements[i])) result[k++] = _elements[i];
-        }
-        return new Set(result);
+        return Filter(value => !other.Contains(value));
     }
 
     public Set Xor(Set other)
@@ -102,28 +47,14 @@ public class Set
 
     public Set Complement(Set universal)
     {
-        int n = 0;
-        for (int i = 0; i < universal._elements.Length; i++)
-        {
-            if (!Contains(universal._elements[i])) n++;
-        }
-        int[] result = new int[n];
-        int k = 0;
-        for (int i = 0; i < universal._elements.Length; i++)
-        {
-            if (!Contains(universal._elements[i]))
-            {
-                result[k++] = universal._elements[i];
-            }
-        }
-        return new Set(result);
+        return universal.Filter(value => !Contains(value));
     }
 
     public bool IsSubsetOf(Set other)
     {
-        for (int i = 0; i < _elements.Length; i++)
+        foreach (int value in _elements)
         {
-            if (!other.Contains(_elements[i]))
+            if (!other.Contains(value))
             {
                 return false;
             }
@@ -131,40 +62,78 @@ public class Set
         return true;
     }
 
+    public bool Equals(Set? other)
+    {
+        return other is not null
+            && _elements.Length == other._elements.Length
+            && IsSubsetOf(other);
+    }
+
     public override bool Equals(object? obj)
     {
-        if (obj is not Set other) return false;
-        if (_elements.Length != other._elements.Length) return false;
-        return IsSubsetOf(other);
+        return Equals(obj as Set);
     }
 
     public override int GetHashCode()
     {
-        int h = 0;
-        for (int i = 0; i < _elements.Length; i++)
+        int hash = 0;
+        foreach (int value in _elements)
         {
-            h += _elements[i];
+            hash += value;
         }
-        return h;
+        return hash;
     }
 
     public override string ToString()
     {
-        if (_elements.Length == 0) return "{}";
-        string s = "{";
-        for (int i = 0; i < _elements.Length; i++)
-        {
-            s += (i > 0 ? ", " : "") + _elements[i];
-        }
-        return s + "}";
+        return "{" + string.Join(", ", _elements) + "}";
     }
 
-    private static bool Contains(int[] arr, int value, int length)
+    private Set Filter(Func<int, bool> keep)
     {
-        for (int i = 0; i < length; i++)
+        int[] buffer = new int[_elements.Length];
+        int count = 0;
+        foreach (int value in _elements)
         {
-            if (arr[i] == value) return true;
+            if (keep(value))
+            {
+                buffer[count++] = value;
+            }
         }
-        return false;
+        return new Set(Trim(buffer, count));
+    }
+
+    private static Set Concatenate(Set first, Set second)
+    {
+        int[] result = new int[first.Count + second.Count];
+        Array.Copy(first._elements, 0, result, 0, first.Count);
+        Array.Copy(second._elements, 0, result, first.Count, second.Count);
+        return new Set(result);
+    }
+
+    private static int[] Deduplicate(int[] raw)
+    {
+        int[] buffer = new int[raw.Length];
+        int count = 0;
+        foreach (int value in raw)
+        {
+            if (Array.IndexOf(buffer, value, 0, count) < 0)
+            {
+                buffer[count++] = value;
+            }
+        }
+        return Trim(buffer, count);
+    }
+
+    private static int[] Trim(int[] buffer, int count)
+    {
+        if (count == buffer.Length)
+        {
+            return buffer;
+        }
+
+        int[] result = new int[count];
+        Array.Copy(buffer, 0, result, 0, count);
+        return result;
     }
 }

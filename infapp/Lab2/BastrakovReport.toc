@@ -12,4 +12,3 @@
 \contentsline {section}{\numberline {6}Результаты вычислений}{11}{section.6}%
 \contentsline {subsection}{\numberline {6.1}Сводная таблица и проверка подстановкой}{13}{subsection.6.1}%
 \contentsline {section}{\numberline {7}Обсуждение результатов}{14}{section.7}%
-\contentsline {section}{\numberline {A}Листинг программы}{15}{appendix.A}%

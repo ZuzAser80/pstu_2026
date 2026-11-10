@@ -10,8 +10,7 @@ using System.IO;
 // комбинированным методом хорд и касательных и методом итераций
 // с точностью eps = 10^-6.
 //
-// Данные можно задать в файле input.txt (см. ReadInput), иначе берётся
-// уравнение варианта 4 на отрезке [1; 1.1].
+// Данные читаются только из файла input.txt (см. ReadInput).
 class Program
 {
     private const double Epsilon = 1e-6;
@@ -19,10 +18,11 @@ class Program
     private static void Main()
     {
         Console.WriteLine("Лабораторная работа №2. Методы решения нелинейных уравнений");
-        Console.WriteLine("Вариант 4. Уравнение: f(x) = " + Equation.Formula);
         Console.WriteLine();
 
         var (a, b, coarseStep, fineStep) = ReadInput();
+        Console.WriteLine("Уравнение: f(x) = " + Equation.Formula);
+        Console.WriteLine();
 
         var (rootA, rootB) = RootSeparation.Separate(a, b, coarseStep, fineStep);
         Console.WriteLine("Корень отделён на отрезке [" + NumberFormat.Format(rootA, 2)
@@ -41,11 +41,12 @@ class Program
         PrintSummary(results);
     }
 
-    // Универсальный ввод данных. Файл input.txt (необязательный) содержит:
+    // Ввод данных только из файла input.txt (файл обязателен):
     //   строка 1: коэффициенты a3 a2 a1 a0;
     //   строка 2: границы отрезка поиска a b;
     //   строка 3: шаги грубого и точного сканирования (необязательно).
-    // Если файла нет или он не разобран, используются параметры варианта 4.
+    // Пустые строки и всё, что начинается с '#', игнорируются.
+    // В качестве десятичного разделителя допускаются точка и запятая.
     private static (double A, double B, double Coarse, double Fine) ReadInput()
     {
         const double defaultCoarse = 1;
@@ -54,43 +55,65 @@ class Program
 
         if (!File.Exists(fileName))
         {
-            Console.WriteLine("Файл input.txt не найден, используется уравнение варианта 4.");
-            Console.WriteLine();
-            return (-2, 3, defaultCoarse, defaultFine);
+            Fail("файл " + fileName + " не найден");
         }
 
-        var parts = new List<double>();
-        foreach (var line in File.ReadAllLines(fileName))
+        var tokens = new List<string>();
+        foreach (var rawLine in File.ReadAllLines(fileName))
         {
-            var tokens = line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var token in tokens)
+            var line = rawLine;
+            var comment = line.IndexOf('#');
+            if (comment >= 0)
             {
-                if (!double.TryParse(token.Replace(',', '.'), NumberStyles.Float,
-                        CultureInfo.InvariantCulture, out var value))
-                {
-                    Console.WriteLine("input.txt: \"" + token + "\" не является числом, "
-                        + "используются параметры варианта 4.");
-                    Console.WriteLine();
-                    return (-2, 3, defaultCoarse, defaultFine);
-                }
-                parts.Add(value);
+                line = line.Substring(0, comment);
+            }
+
+            tokens.AddRange(line.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+        }
+
+        if (tokens.Count < 6)
+        {
+            Fail("нужно минимум 6 чисел (a3 a2 a1 a0 a b), найдено " + tokens.Count);
+        }
+        if (tokens.Count > 8)
+        {
+            Fail("нужно не больше 8 чисел (a3 a2 a1 a0 a b [coarse fine]), найдено "
+                + tokens.Count);
+        }
+
+        var numbers = new double[tokens.Count];
+        for (var i = 0; i < tokens.Count; i++)
+        {
+            if (!double.TryParse(tokens[i].Replace(',', '.'), NumberStyles.Float,
+                    CultureInfo.InvariantCulture, out numbers[i]))
+            {
+                Fail("\"" + tokens[i] + "\" не является числом");
             }
         }
 
-        if (parts.Count < 6)
+        var a = numbers[4];
+        var b = numbers[5];
+        var coarse = numbers.Length > 6 ? numbers[6] : defaultCoarse;
+        var fine = numbers.Length > 7 ? numbers[7] : defaultFine;
+
+        if (a >= b)
         {
-            Console.WriteLine("input.txt: нужно минимум 6 чисел (a3 a2 a1 a0 a b), "
-                + "используются параметры варианта 4.");
-            Console.WriteLine();
-            return (-2, 3, defaultCoarse, defaultFine);
+            Fail("левый конец отрезка a должен быть меньше правого b");
+        }
+        if (coarse <= 0 || fine <= 0)
+        {
+            Fail("шаги сканирования должны быть положительными");
         }
 
-        Equation.Set(parts[0], parts[1], parts[2], parts[3]);
-        var coarse = parts.Count > 6 ? parts[6] : defaultCoarse;
-        var fine = parts.Count > 7 ? parts[7] : defaultFine;
-        Console.WriteLine("Данные прочитаны из input.txt: f(x) = " + Equation.Formula);
-        Console.WriteLine();
-        return (parts[4], parts[5], coarse, fine);
+        Equation.Set(numbers[0], numbers[1], numbers[2], numbers[3]);
+        Console.WriteLine("Данные прочитаны из input.txt.");
+        return (a, b, coarse, fine);
+    }
+
+    private static void Fail(string message)
+    {
+        Console.Error.WriteLine("input.txt: " + message + ".");
+        Environment.Exit(1);
     }
 
     // Сводная таблица: метод, задание отрезка и начального приближения,

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian) (preloaded format=xelatex 2026.10.13)  14 OCT 2026 13:31
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2025/dev/Debian) (preloaded format=xelatex 2026.11.10)  10 NOV 2026 12:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -10,8 +10,6 @@ L3 programming layer <2025-01-18>
 Document Class: extarticle 1996/10/08 v1.0 Non Standard LaTeX document class
 (/usr/share/texlive/texmf-dist/tex/latex/extsizes/size14.clo
 File: size14.clo 1999/11/11 v1.4a NON-Standard LaTeX file (size option)
-Font mapping `tex-text.tec' for font `[lmroman12-regular]:mapping=tex-text;' no
-t found.
 )
 (/usr/share/texlive/texmf-dist/tex/latex/base/exscale.sty
 Package: exscale 2018/09/24 v2.1i Standard LaTeX package exscale
@@ -74,10 +72,7 @@ X
 (/usr/share/texlive/texmf-dist/tex/latex/base/fontenc.sty
 Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 )
-(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)
-Font mapping `tex-text.tec' for font `[lmroman12-bold]:mapping=tex-text;' not f
-ound.
-))
+(/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
 (/usr/share/texlive/texmf-dist/tex/latex/polyglossia/polyglossia.sty
 Package: polyglossia 2025/01/31 v2.4 Modern multilingual typesetting with XeLaT
 eX and LuaLaTeX
@@ -98,6 +93,11 @@ File: gloss-russian.ldf polyglossia: module for Russian
 Package: xpg-cyrillicnumbers 2019/11/15 v0.2 Formatting of Cyrillic alphabetic 
 numbers
 )
+
+Package polyglossia Warning: No hyphenation patterns were loaded for `russian'
+(polyglossia)                I will use \language=\l@nohyphenation instead.
+
+\l@russian = a dialect from \language\l@nohyphenation 
 (/usr/share/texlive/texmf-dist/tex/latex/polyglossia/babelsh.def
 File: babelsh.def 2022/06/21 Babel common definitions for shorthands
  Taken verbatim from babel files (2022/06/06 v3.76)
@@ -129,7 +129,6 @@ Package fontspec Info:
 (fontspec)             Serif/BI/OT:script=latn;language=dflt;mapping=tex-text;"
 
 
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
 
 Package fontspec Info: 
 (fontspec)             Font family 'DejaVuSansMono(0)' created for font
@@ -530,7 +529,6 @@ Package fontspec Info:
 (fontspec)             Serif/BI/OT:script=cyrl;language=dflt;mapping=tex-text;"
 
 
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
 
 (./BastrakovReport.aux)
 \openout1 = `BastrakovReport.aux'.
@@ -666,12 +664,6 @@ Package hyperref Info: Link coloring OFF on input line 97.
 \@outlinefile=\write3
 \openout3 = `BastrakovReport.out'.
 
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif Bold' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
 LaTeX Font Info:    Trying to load font information for U+msa on input line 122
 .
 
@@ -687,25 +679,38 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 
 [1
 
-] (./BastrakovReport.toc
-Font mapping `tex-text.tec' for font `Liberation Serif Bold' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-)
+] (./BastrakovReport.toc)
 \tf@toc=\write4
 \openout4 = `BastrakovReport.toc'.
 
 
 
 [1]
-Overfull \hbox (5.60056pt too wide) in paragraph at lines 136--140
+Overfull \hbox (36.41148pt too wide) in paragraph at lines 136--140
 \TU/LiberationSerif(1)/m/n/14.4 заданной точностью методами половинного деления
-, хорд, касательных (Нью-
+, хорд, касательных (Ньютона),
  []
 
-Font mapping `tex-text.tec' for font `Liberation Serif Italic' not found.
+
+Overfull \hbox (33.27315pt too wide) in paragraph at lines 152--154
+[]\TU/LiberationSerif(1)/m/n/14.4 обосновать выбор начального приближения и про
+верить условия сходимости
+ []
+
+
+Overfull \hbox (28.9606pt too wide) in paragraph at lines 194--197
+\TU/LiberationSerif(1)/m/n/14.4 откуда []. Дальнейшее уточнение этого отрезка и
+ выполняют численные
+ []
+
 
 
 [2]
+Overfull \hbox (29.7669pt too wide) in paragraph at lines 201--205
+\TU/LiberationSerif(1)/m/n/14.4 Знак второй производной используется ниже при в
+ыборе начального приближения
+ []
+
 File: graphics/img/fig_function.pdf Graphic file (type pdf)
 <use graphics/img/fig_function.pdf>
 File: graphics/img/fig_separation.pdf Graphic file (type pdf)
@@ -713,34 +718,112 @@ File: graphics/img/fig_separation.pdf Graphic file (type pdf)
 
 
 [3]
-Font mapping `tex-text.tec' for font `Liberation Serif Bold' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
+Overfull \hbox (9.09627pt too wide) in paragraph at lines 232--237
+\TU/LiberationSerif(1)/m/n/14.4 функции на одном из концов отрезка равно нулю, 
+этот конец сразу принимается
+ []
+
+
+Overfull \hbox (16.60197pt too wide) in paragraph at lines 232--237
+\TU/LiberationSerif(1)/m/n/14.4 за точный корень; если $\OML/cmm/m/it/14.4 f\OT
+1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 c\OT1/cmr/m/n/14.4 ) = 0$\TU/LiberationSerif
+(1)/m/n/14.4 , то корнем является $\OML/cmm/m/it/14.4 c$\TU/LiberationSerif(1)/
+m/n/14.4 , и вычисления немедленно
+ []
+
+
+Overfull \hbox (1.16162pt too wide) in paragraph at lines 232--237
+\TU/LiberationSerif(1)/m/n/14.4 прекращаются. В противном случае из двух полови
+н выбирается та, на концах
+ []
+
+
+Overfull \hbox (17.13402pt too wide) in paragraph at lines 240--248
+\TU/LiberationSerif(1)/m/n/14.4 всегда и со скоростью геометрической прогрессии
+ со знаменателем $\OT1/cmr/m/n/14.4 1/2$\TU/LiberationSerif(1)/m/n/14.4 . Услов
+ие
+ []
+
 File: graphics/img/fig_bisection.pdf Graphic file (type pdf)
 <use graphics/img/fig_bisection.pdf>
 
 
 [4]
+Overfull \hbox (12.76855pt too wide) in paragraph at lines 258--263
+\TU/LiberationSerif(1)/m/n/14.4 с осью $\OML/cmm/m/it/14.4 Ox$ \TU/LiberationSe
+rif(1)/m/n/14.4 принимается за новое приближение. Один конец отрезка неподвижен
+
+ []
+
+
+Overfull \hbox (6.29515pt too wide) in paragraph at lines 258--263
+\TU/LiberationSerif(1)/m/n/14.4 противоположный конец. В нашем случае $\OML/cmm
+/m/it/14.4 f\OT1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 b\OT1/cmr/m/n/14.4 ) \OMS/cms
+y/m/n/14.4 ^^A \OML/cmm/m/it/14.4 f[]\OT1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 b\OT
+1/cmr/m/n/14.4 ) \OML/cmm/m/it/14.4 > \OT1/cmr/m/n/14.4 0$\TU/LiberationSerif(1
+)/m/n/14.4 , поэтому неподвижен
+ []
+
 File: graphics/img/fig_chord.pdf Graphic file (type pdf)
 <use graphics/img/fig_chord.pdf>
 
 
 [5]
+Overfull \hbox (28.39886pt too wide) in paragraph at lines 279--281
+[]\TU/LiberationSerif(1)/m/n/14.4 В точке $\OML/cmm/m/it/14.4 x[]$ \TU/Liberati
+onSerif(1)/m/n/14.4 проводится касательная к графику функции; точка её пересече
+ния
+ []
+
 File: graphics/img/fig_newton.pdf Graphic file (type pdf)
 <use graphics/img/fig_newton.pdf>
 
 
 [6]
+Overfull \hbox (36.51651pt too wide) in paragraph at lines 299--303
+[]\TU/LiberationSerif(1)/m/n/14.4 Корень уточняется одновременно с двух сторон.
+ Обозначим $\OML/cmm/m/it/14.4 x[]$ \TU/LiberationSerif(1)/m/n/14.4 - приближен
+ие
+ []
+
 File: graphics/img/fig_combined.pdf Graphic file (type pdf)
 <use graphics/img/fig_combined.pdf>
 
 
 [7]
+Overfull \hbox (57.31575pt too wide) in paragraph at lines 330--333
+\TU/LiberationSerif(1)/m/n/14.4 что обеспечивает сходимость последовательности 
+$\OML/cmm/m/it/14.4 x[] \OT1/cmr/m/n/14.4 = \OML/cmm/m/it/14.4 '\OT1/cmr/m/n/14
+.4 (\OML/cmm/m/it/14.4 x[]\OT1/cmr/m/n/14.4 )$\TU/LiberationSerif(1)/m/n/14.4 .
+ Оценка погрешности: 
+ []
+
 File: graphics/img/fig_iteration.pdf Graphic file (type pdf)
 <use graphics/img/fig_iteration.pdf>
 
 
 [8]
+Overfull \hbox (26.30139pt too wide) in paragraph at lines 347--347
+[]\TU/LiberationSerif(1)/b/n/20.74 Проверка условий сходимости и выбор начально
+го
+ []
+
+
+Overfull \hbox (7.04976pt too wide) in paragraph at lines 358--360
+[]\TU/LiberationSerif(1)/b/n/14.4 Метод хорд. \TU/LiberationSerif(1)/m/n/14.4 В
+торая производная знакопостоянна на $\OT1/cmr/m/n/14.4 [1; 1[]1]$\TU/Liberation
+Serif(1)/m/n/14.4 . Неподвижен
+ []
+
+
+Overfull \hbox (30.99998pt too wide) in paragraph at lines 371--374
+[]\TU/LiberationSerif(1)/b/n/14.4 Комбинированный метод. \TU/LiberationSerif(1)
+/m/n/14.4 Хорды - из $\OML/cmm/m/it/14.4 x[] \OT1/cmr/m/n/14.4 = 1[]0$ \TU/Libe
+rationSerif(1)/m/n/14.4 (здесь $\OML/cmm/m/it/14.4 ff[] < \OT1/cmr/m/n/14.4 0$\
+TU/LiberationSerif(1)/m/n/14.4 ), касательные
+ []
+
+
 
 [9]
 
@@ -762,9 +845,39 @@ Space,Script=Cyrillic].
 (fontspec)             - 'bold italic' (b/it) with NFSS spec.: <->"DejaVu Sans
 (fontspec)             Mono/BI/OT:script=cyrl;language=dflt;"
 
+
+Overfull \hbox (43.5823pt too wide) in paragraph at lines 389--398
+\TU/DejaVuSansMono(1)/m/n/14.4 input.txt\TU/LiberationSerif(1)/m/n/14.4 , распо
+ложенного в каталоге программы. Файл содержит коэффициенты
+ []
+
+
+Overfull \hbox (14.53142pt too wide) in paragraph at lines 389--398
+\TU/LiberationSerif(1)/m/n/14.4 Если файл отсутствует или содержит некорректные
+ данные, программа выводит
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 407--408
+[]|\TU/LiberationSerif(1)/m/n/14.4 вычисление $\OML/cmm/m/it/14.4 f\OT1/cmr/m/n
+/14.4 (\OML/cmm/m/it/14.4 x\OT1/cmr/m/n/14.4 )$\TU/LiberationSerif(1)/m/n/14.4 
+, $\OML/cmm/m/it/14.4 f[]\OT1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 x\OT1/cmr/m/n/14
+.4 )$\TU/LiberationSerif(1)/m/n/14.4 , $\OML/cmm/m/it/14.4 f[]\OT1/cmr/m/n/14.4
+ (\OML/cmm/m/it/14.4 x\OT1/cmr/m/n/14.4 )$\TU/LiberationSerif(1)/m/n/14.4 ;
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 412--413
+[]|\TU/LiberationSerif(1)/m/n/14.4 комбинированный метод хорд и
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 417--418
+[]|\TU/LiberationSerif(1)/m/n/14.4 исходные данные задачи:
+ []
+
 Package hyperref Info: bookmark level for unknown lstlisting defaults to 0 on i
-nput line 416.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
+nput line 425.
 
 
 [10]
@@ -772,56 +885,73 @@ Font mapping `tex-text.tec' for font `Liberation Serif' not found.
 [11]
 
 [12]
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-Font mapping `tex-text.tec' for font `Liberation Serif' not found.
-
 
 [13]
+Overfull \hbox (5.71373pt too wide) in paragraph at lines 619--624
+\OML/cmm/m/it/14.4 f\OT1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 a\OT1/cmr/m/n/14.4 )\
+OML/cmm/m/it/14.4 f\OT1/cmr/m/n/14.4 (\OML/cmm/m/it/14.4 b\OT1/cmr/m/n/14.4 ) \
+OML/cmm/m/it/14.4 < \OT1/cmr/m/n/14.4 0$\TU/LiberationSerif(1)/m/n/14.4 , но ме
+дленнее всех - потребовалось $\OT1/cmr/m/n/14.4 18$ \TU/LiberationSerif(1)/m/n/
+14.4 шагов; из-за деления
+ []
 
-[14] (./Program.cs
 
-[15]
+Overfull \hbox (33.34554pt too wide) in paragraph at lines 625--630
+\TU/LiberationSerif(1)/m/n/14.4 неподвижным концом $\OML/cmm/m/it/14.4 b$\TU/Li
+berationSerif(1)/m/n/14.4 . Потребовалось $\OT1/cmr/m/n/14.4 4$ \TU/LiberationS
+erif(1)/m/n/14.4 шага; на каждом шаге погрешность
+ []
 
-[16])
 
-[17] (./Equation.cs
+Overfull \hbox (29.25487pt too wide) in paragraph at lines 631--636
+[]\TU/LiberationSerif(1)/b/n/14.4 Метод касательных \TU/LiberationSerif(1)/m/n/
+14.4 сходится квадратично: число верных цифр удваивается
+ []
 
-[18]) (./RootSeparation.cs
 
-[19])
+Overfull \hbox (16.61742pt too wide) in paragraph at lines 631--636
+\TU/LiberationSerif(1)/m/n/14.4 на каждом шаге, поэтому хватило $\OT1/cmr/m/n/1
+4.4 3$ \TU/LiberationSerif(1)/m/n/14.4 шагов. Это самый быстрый из методов,
+ []
 
-[20] (./BisectionSolver.cs
 
-[21]) (./ChordSolver.cs
+Overfull \hbox (2.30766pt too wide) in paragraph at lines 637--643
+\TU/LiberationSerif(1)/m/n/14.4 касательных, на каждом шаге даёт \TU/Liberation
+Serif(1)/m/it/14.4 двустороннюю \TU/LiberationSerif(1)/m/n/14.4 оценку: корень 
+всегда
+ []
 
-[22]) (./NewtonSolver.cs
 
-[23]) (./CombinedSolver.cs
+Overfull \hbox (8.23456pt too wide) in paragraph at lines 650--656
+[]\TU/LiberationSerif(1)/b/n/14.4 Вывод. \TU/LiberationSerif(1)/m/n/14.4 Для да
+нного уравнения наиболее эффективны комбинированный
+ []
 
-[24]) (./IterationSolver.cs
 
-[25]
+Overfull \hbox (70.84343pt too wide) in paragraph at lines 650--656
+\TU/LiberationSerif(1)/m/n/14.4 Комбинированный метод сочетает высокую скорость
+ метода Ньютона с гарантированной
+ []
 
-[26]) (./RootResult.cs
 
-[27]) (./NumberFormat.cs)
 
-[28] (./BastrakovReport.aux)
+[14]
+
+[15] (./BastrakovReport.aux)
  ***********
 LaTeX2e <2024-11-01> patch level 2
 L3 programming layer <2025-01-18>
  ***********
 Package rerunfilecheck Info: File `BastrakovReport.out' has not changed.
-(rerunfilecheck)             Checksum: 0C24CAF8AEA6DD5690A773DB11472F04;3668.
+(rerunfilecheck)             Checksum: FBDFE68925E0DBCF868C99C44E7E1F45;3487.
  ) 
 Here is how much of TeX's memory you used:
- 17045 strings out of 475106
- 329261 string characters out of 5766693
- 1618429 words of memory out of 5000000
- 39677 multiletter control sequences out of 15000+600000
+ 16858 strings out of 475852
+ 326634 string characters out of 5775422
+ 1121202 words of memory out of 5000000
+ 39510 multiletter control sequences out of 15000+600000
  568555 words of font info for 143 fonts, out of 8000000 for 9000
- 682 hyphenation exceptions out of 8191
- 79i,12n,93p,548b,1894s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 14 hyphenation exceptions out of 8191
+ 79i,12n,93p,548b,1892s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on BastrakovReport.pdf (29 pages).
+Output written on BastrakovReport.pdf (16 pages).

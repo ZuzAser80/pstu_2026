@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Text;
 
 // Отделение корней уравнения. Сначала корни отделяются аналитически
 // (по знаку производной устанавливается число корней), затем отрезок
@@ -13,8 +15,7 @@ static class RootSeparation
     {
         Console.WriteLine("ОТДЕЛЕНИЕ КОРНЕЙ");
         Console.WriteLine("Уравнение: f(x) = " + Equation.Formula);
-        Console.WriteLine("f'(x) = 3x^2 - 0.2x + 0.4, D = 0.04 - 4.8 = -4.76 < 0 => f'(x) > 0,");
-        Console.WriteLine("функция строго возрастает, значит корень единственный.");
+        PrintDerivativeAnalysis();
         Console.WriteLine();
 
         Console.WriteLine("Грубая таблица знаков функции:");
@@ -28,16 +29,53 @@ static class RootSeparation
         return refined;
     }
 
+    // Анализ первой производной: её знак показывает, монотонна ли функция
+    // и сколько у уравнения действительных корней.
+    private static void PrintDerivativeAnalysis()
+    {
+        var coefficients = Equation.Coefficients;
+        var a = 3 * coefficients[0];
+        var b = 2 * coefficients[1];
+        var c = coefficients[2];
+
+        Console.WriteLine("f'(x) = " + Polynomial(a, b, c));
+
+        if (a == 0)
+        {
+            Console.WriteLine("Производная не является квадратичной; "
+                + "корни отделяются по таблице знаков.");
+            return;
+        }
+
+        var discriminant = b * b - 4 * a * c;
+        Console.WriteLine("D = " + G(discriminant) + ".");
+        if (discriminant < 0)
+        {
+            Console.WriteLine(a > 0
+                ? "f'(x) > 0 при всех x => функция строго возрастает, корень единственный."
+                : "f'(x) < 0 при всех x => функция строго убывает, корень единственный.");
+        }
+        else
+        {
+            Console.WriteLine("f'(x) обращается в нуль; "
+                + "корни отделяются по таблице знаков.");
+        }
+    }
+
     // Ищет отрезок смены знака функции на [from, to] с заданным шагом,
-    // печатая таблицу знаков. Возвращает отрезок [a, b], где f(a)*f(b) < 0.
+    // печатая таблицу знаков. Возвращает отрезок [a, b], где f(a)*f(b) <= 0.
+    // Точки вычисляются как from + i*step, чтобы не накапливать погрешность
+    // и не пропустить точный нуль функции в узле сетки.
     private static (double A, double B) FindSignChange(double from, double to, double step)
     {
         double previousX = from;
         double previousValue = Equation.Value(from);
         Console.WriteLine(Row(previousX, previousValue));
 
-        for (var x = from + step; x <= to + 1e-9; x += step)
+        var count = (int)Math.Floor((to - from) / step + 1e-9);
+        for (var i = 1; i <= count; i++)
         {
+            var x = from + i * step;
             var value = Equation.Value(x);
             Console.WriteLine(Row(x, value));
             if (Math.Sign(value) != Math.Sign(previousValue))
@@ -46,6 +84,17 @@ static class RootSeparation
             }
             previousX = x;
             previousValue = value;
+        }
+
+        // Последняя точка отрезка, если шаг не укладывается в него целиком.
+        if (previousX < to - 1e-12)
+        {
+            var value = Equation.Value(to);
+            Console.WriteLine(Row(to, value));
+            if (Math.Sign(value) != Math.Sign(previousValue))
+            {
+                return (previousX, to);
+            }
         }
 
         throw new InvalidOperationException(
@@ -59,5 +108,30 @@ static class RootSeparation
         return "   x = " + NumberFormat.Cell(x, 2)
             + "   f(x) = " + NumberFormat.Cell(value, 4)
             + "   знак: " + sign;
+    }
+
+    // Многочлен a*x^2 + b*x + c в удобочитаемом виде
+    private static string Polynomial(double a, double b, double c)
+    {
+        var text = new StringBuilder();
+        text.Append(G(a)).Append("x^2");
+        text.Append(Term(b, "x"));
+        text.Append(Term(c, string.Empty));
+        return text.ToString();
+    }
+
+    private static string Term(double value, string suffix)
+    {
+        if (value == 0)
+        {
+            return string.Empty;
+        }
+
+        return (value < 0 ? " - " : " + ") + G(Math.Abs(value)) + suffix;
+    }
+
+    private static string G(double value)
+    {
+        return value.ToString("G10", CultureInfo.InvariantCulture);
     }
 }
