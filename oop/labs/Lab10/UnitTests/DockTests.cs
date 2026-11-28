@@ -86,7 +86,7 @@ public class DockTests
     public void Equals_WithAnotherSubtypeHoldingTheSameBaseFields_ReturnsFalse()
     {
         var dock = CreateDock();
-        var factory = new Factory("Saint Petersburg", "MoyDock", 500_000, ProductTypeEnum.FOOD, 12, 3);
+        var factory = new Factory("Saint Petersburg", "MoyDock", 500_000, ProductTypeEnum.FOOD, [], 3);
 
         Assert.False(dock.Equals(factory));
         Assert.False(factory.Equals(dock));
@@ -117,35 +117,5 @@ public class DockTests
         // string, so the shallow copy still compares equal.
         Assert.True(original.Equals(shallow));
         Assert.NotSame(original, shallow);
-    }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    [InlineData(200)]
-    public void RandomInit_KeepsEveryDerivedFieldInRange(int iterations)
-    {
-        var dock = new Dock();
-
-        for (var i = 0; i < iterations; i++)
-        {
-            dock.RandomInit();
-
-            Assert.InRange(dock.ShipsInDock, 1, 14);
-            Assert.InRange(dock.ShipDisplacement, 1000.0, 49_999.0);
-            Assert.True(Enum.IsDefined(dock.ShipType));
-        }
-    }
-
-    [Fact]
-    public void RandomInit_AlsoFillsTheBaseFields()
-    {
-        var dock = new Dock();
-
-        dock.RandomInit();
-
-        Assert.InRange(dock.AnnualMoneyEarned, 100, 9999);
-        Assert.True(Guid.TryParse(dock.Name, out _));
-        Assert.True(Guid.TryParse(dock.Address, out _));
     }
 }

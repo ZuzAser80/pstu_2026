@@ -2,9 +2,19 @@ namespace Lab10.Tests;
 
 public class FactoryTests
 {
+    private static Worker[] CreateWorkers()
+    {
+        return
+        [
+            new Worker("Ivan", 5, "Welding", "Welder"),
+            new Worker("Petr", 2, "Assembly", "Mechanic"),
+            new Worker("Anna", 10, "Welding", "Engineer"),
+        ];
+    }
+
     private static Factory CreateFactory()
     {
-        return new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, 40, 7);
+        return new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, CreateWorkers(), 7);
     }
 
     [Fact]
@@ -13,6 +23,7 @@ public class FactoryTests
         var factory = new Factory();
 
         Assert.Equal(ProductTypeEnum.NONE, factory.ProductType);
+        Assert.Empty(factory.Workers);
         Assert.Equal(0, factory.WorkerCount);
         Assert.Equal(0, factory.EngineerCount);
         Assert.Equal("placeholder", factory.Name);
@@ -22,13 +33,15 @@ public class FactoryTests
     [Fact]
     public void FullConstructor_AssignsBaseAndDerivedFields()
     {
-        var factory = CreateFactory();
+        var workers = CreateWorkers();
+        var factory = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, workers, 7);
 
         Assert.Equal("Saint Petersburg", factory.Address);
         Assert.Equal("MoyZavod", factory.Name);
         Assert.Equal(750_000, factory.AnnualMoneyEarned);
         Assert.Equal(ProductTypeEnum.MACHINERY, factory.ProductType);
-        Assert.Equal(40, factory.WorkerCount);
+        Assert.Equal(workers, factory.Workers);
+        Assert.Equal(3, factory.WorkerCount);
         Assert.Equal(7, factory.EngineerCount);
     }
 
@@ -42,8 +55,9 @@ public class FactoryTests
         Assert.True(mold.Equals(copy));
         Assert.NotSame(mold, copy);
         Assert.Equal(mold.ProductType, copy.ProductType);
-        Assert.Equal(mold.WorkerCount, copy.WorkerCount);
         Assert.Equal(mold.EngineerCount, copy.EngineerCount);
+        Assert.Equal(mold.Workers, copy.Workers);
+        Assert.NotSame(mold.Workers, copy.Workers);
     }
 
     [Fact]
@@ -56,10 +70,11 @@ public class FactoryTests
     }
 
     [Fact]
-    public void Equals_WithDifferentWorkerCount_ReturnsFalse()
+    public void Equals_WithDifferentWorkers_ReturnsFalse()
     {
         var first = CreateFactory();
-        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, 41, 7);
+        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY,
+            [new Worker("Ivan", 5, "Welding", "Welder"), new Worker("Petr", 2, "Assembly", "Mechanic"), new Worker("Anna", 11, "Welding", "Engineer")], 7);
 
         Assert.False(first.Equals(second));
     }
@@ -68,7 +83,7 @@ public class FactoryTests
     public void Equals_WithDifferentProductType_ReturnsFalse()
     {
         var first = CreateFactory();
-        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.CHEMICALS, 40, 7);
+        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.CHEMICALS, CreateWorkers(), 7);
 
         Assert.False(first.Equals(second));
     }
@@ -77,7 +92,7 @@ public class FactoryTests
     public void Equals_WithDifferentEngineerCount_ReturnsFalse()
     {
         var first = CreateFactory();
-        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, 40, 8);
+        var second = new Factory("Saint Petersburg", "MoyZavod", 750_000, ProductTypeEnum.MACHINERY, CreateWorkers(), 8);
 
         Assert.False(first.Equals(second));
     }
@@ -115,33 +130,73 @@ public class FactoryTests
         Assert.NotSame(original, shallow);
     }
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    [InlineData(200)]
-    public void RandomInit_KeepsEveryDerivedFieldInRange(int iterations)
+    [Fact]
+    public void GetWorkerNamesWithMinExperience_ReturnsNamesWithExperienceNotLessThanGiven()
     {
-        var factory = new Factory();
+        var factory = CreateFactory();
 
-        for (var i = 0; i < iterations; i++)
-        {
-            factory.RandomInit();
+        var names = factory.GetWorkerNamesWithMinExperience(5);
 
-            Assert.InRange(factory.WorkerCount, 1, 14);
-            Assert.InRange(factory.EngineerCount, 0, 19);
-            Assert.True(Enum.IsDefined(factory.ProductType));
-        }
+        Assert.Equal(["Ivan", "Anna"], names);
     }
 
     [Fact]
-    public void RandomInit_AlsoFillsTheBaseFields()
+    public void GetWorkerNamesWithMinExperience_ReturnsEmpty_WhenNoWorkerMatches()
     {
-        var factory = new Factory();
+        var factory = CreateFactory();
 
-        factory.RandomInit();
+        var names = factory.GetWorkerNamesWithMinExperience(11);
 
-        Assert.InRange(factory.AnnualMoneyEarned, 100, 9999);
-        Assert.True(Guid.TryParse(factory.Name, out _));
-        Assert.True(Guid.TryParse(factory.Address, out _));
+        Assert.Empty(names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesWithMinExperience_ReturnsAllNames_WhenThresholdIsZero()
+    {
+        var factory = CreateFactory();
+
+        var names = factory.GetWorkerNamesWithMinExperience(0);
+
+        Assert.Equal(["Ivan", "Petr", "Anna"], names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesByWorkshop_ReturnsNamesOfWorkersInGivenWorkshop()
+    {
+        var factory = CreateFactory();
+
+        var names = factory.GetWorkerNamesByWorkshop("Welding");
+
+        Assert.Equal(["Ivan", "Anna"], names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesByWorkshop_ReturnsEmpty_WhenNoWorkerMatches()
+    {
+        var factory = CreateFactory();
+
+        var names = factory.GetWorkerNamesByWorkshop("Painting");
+
+        Assert.Empty(names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesByProfession_ReturnsNamesOfWorkersWithGivenProfession()
+    {
+        var factory = CreateFactory();
+
+        var names = factory.GetWorkerNamesByProfession("Mechanic");
+
+        Assert.Equal(["Petr"], names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesByProfession_ReturnsEmpty_WhenNoWorkerMatches()
+    {
+        var factory = CreateFactory();
+
+        var names = factory.GetWorkerNamesByProfession("Painter");
+
+        Assert.Empty(names);
     }
 }

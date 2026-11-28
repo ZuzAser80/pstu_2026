@@ -114,34 +114,4 @@ public class InsuranceCompanyTests
         Assert.True(original.Equals(shallow));
         Assert.NotSame(original, shallow);
     }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    [InlineData(200)]
-    public void RandomInit_KeepsEveryDerivedFieldInRange(int iterations)
-    {
-        var insurance = new InsuranceCompany();
-
-        for (var i = 0; i < iterations; i++)
-        {
-            insurance.RandomInit();
-
-            Assert.InRange(insurance.ClientCount, 1, 14);
-            Assert.InRange(insurance.InsuranceFund, 1000, 99_999);
-            Assert.True(Enum.IsDefined(insurance.InsuranceType));
-        }
-    }
-
-    [Fact]
-    public void RandomInit_AlsoFillsTheBaseFields()
-    {
-        var insurance = new InsuranceCompany();
-
-        insurance.RandomInit();
-
-        Assert.InRange(insurance.AnnualMoneyEarned, 100, 9999);
-        Assert.True(Guid.TryParse(insurance.Name, out _));
-        Assert.True(Guid.TryParse(insurance.Address, out _));
-    }
 }

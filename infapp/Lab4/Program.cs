@@ -8,7 +8,7 @@ using System.Text;
 // Программа реализует четыре задания:
 //   1) формулу трапеций с удвоением числа разбиений и уточнением по Рунге;
 //   2) формулу Симпсона с тем же алгоритмом;
-//   3) квадратуры Гаусса с 4 и 5 узлами;
+//   3) квадратуры Гаусса–Лежандра с 4 и 5 узлами;
 //   4) сравнение результатов с точным значением интеграла.
 //
 // Исходные данные обязательно читаются из файла input.txt (см. InputData).
@@ -127,7 +127,7 @@ internal static class Program
 
     private static void PrintGauss(GaussResult result)
     {
-        Console.WriteLine("Задание 3. Формула Гаусса, число узлов n = " + result.NodeCount + ".");
+        Console.WriteLine("Задание 3. Формула Гаусса–Лежандра, число узлов n = " + result.NodeCount + ".");
         Console.WriteLine("x_i = (a+b)/2 + (b-a)/2 * t_i = "
             + NumberFormat.Format(result.Center, 6) + " + "
             + NumberFormat.Format(result.HalfLength, 6) + " * t_i.");
@@ -175,8 +175,8 @@ internal static class Program
 
         PrintComparisonRow("Трапеции + Рунге", trapezoid.FinalParts, trapezoid.Value, exact);
         PrintComparisonRow("Симпсон + Рунге", simpson.FinalParts, simpson.Value, exact);
-        PrintComparisonRow("Гаусс", gauss4.NodeCount, gauss4.Value, exact);
-        PrintComparisonRow("Гаусс", gauss5.NodeCount, gauss5.Value, exact);
+        PrintComparisonRow("Гаусс–Лежандра", gauss4.NodeCount, gauss4.Value, exact);
+        PrintComparisonRow("Гаусс–Лежандра", gauss5.NodeCount, gauss5.Value, exact);
 
         Console.WriteLine();
     }
@@ -208,9 +208,9 @@ internal static class Program
         Console.WriteLine("  Отклонение от точного значения:");
         Console.WriteLine("    трапеции (Рунге): " + NumberFormat.Scientific(errorTrapezoid, 4));
         Console.WriteLine("    Симпсон (Рунге):  " + NumberFormat.Scientific(errorSimpson, 4));
-        Console.WriteLine("    Гаусс, n = 4:     " + NumberFormat.Scientific(errorGauss4, 4));
-        Console.WriteLine("    Гаусс, n = 5:     " + NumberFormat.Scientific(errorGauss5, 4));
-        Console.WriteLine("  Наименьшую погрешность дала формула Гаусса с "
+        Console.WriteLine("    Гаусс–Лежандра, n = 4: " + NumberFormat.Scientific(errorGauss4, 4));
+        Console.WriteLine("    Гаусс–Лежандра, n = 5: " + NumberFormat.Scientific(errorGauss5, 4));
+        Console.WriteLine("  Наименьшую погрешность дала формула Гаусса–Лежандра с "
             + (errorGauss5 <= errorGauss4 ? 5 : 4) + " узлами.");
         Console.WriteLine();
     }

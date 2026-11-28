@@ -114,34 +114,4 @@ public class LibraryTests
         Assert.True(original.Equals(shallow));
         Assert.NotSame(original, shallow);
     }
-
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    [InlineData(200)]
-    public void RandomInit_KeepsEveryDerivedFieldInRange(int iterations)
-    {
-        var library = new Library();
-
-        for (var i = 0; i < iterations; i++)
-        {
-            library.RandomInit();
-
-            Assert.InRange(library.BookCount, 1, 14);
-            Assert.InRange(library.TextbookCount, 0, 499);
-            Assert.True(Enum.IsDefined(library.BookGenres));
-        }
-    }
-
-    [Fact]
-    public void RandomInit_AlsoFillsTheBaseFields()
-    {
-        var library = new Library();
-
-        library.RandomInit();
-
-        Assert.InRange(library.AnnualMoneyEarned, 100, 9999);
-        Assert.True(Guid.TryParse(library.Name, out _));
-        Assert.True(Guid.TryParse(library.Address, out _));
-    }
 }

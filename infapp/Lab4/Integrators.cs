@@ -151,7 +151,7 @@ internal static class Quadrature
     }
 }
 
-// Одна строка таблицы квадратур Гаусса.
+// Одна строка таблицы квадратуры Гаусса–Лежандра.
 internal sealed class GaussNode
 {
     public double Weight { get; }
@@ -192,7 +192,8 @@ internal sealed class GaussResult
     }
 }
 
-// Квадратура Гаусса с 4 и 5 узлами на отрезке [a, b].
+// Обычная квадратура Гаусса–Лежандра (вес p(x) = 1) с 4 и 5 узлами
+// на отрезке [a, b]. Узлы t_i — нули многочлена Лежандра на [-1, 1].
 internal static class GaussQuadrature
 {
     private static readonly double[] Nodes4 =
@@ -230,7 +231,7 @@ internal static class GaussQuadrature
                 weights = Weights5;
                 break;
             default:
-                throw new ArgumentException("Поддерживаются квадратуры Гаусса с 4 или 5 узлами.");
+                throw new ArgumentException("Поддерживаются квадратуры Гаусса–Лежандра с 4 или 5 узлами.");
         }
 
         double center = (a + b) / 2.0;

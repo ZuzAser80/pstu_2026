@@ -49,6 +49,31 @@ public class Program
         int notFound = BinarySearch(array, missingName, new NameComparer());
         Console.WriteLine($"Ищем отсутствующее имя '{missingName}' -> индекс {notFound} (битовое дополнение позиции вставки)");
 
+        Console.WriteLine("\n=== Запросы по работникам (Organisation) ===\n");
+
+        var orgWithWorkers = array[0];
+        Console.WriteLine($"Организация: {orgWithWorkers.Name}");
+        Console.WriteLine("Работники:");
+        foreach (var worker in orgWithWorkers.Workers)
+        {
+            Console.WriteLine($"- {worker.Name}, стаж: {worker.Experience}, цех: {worker.Workshop}, профессия: {worker.Profession}");
+        }
+
+        int minExperience = orgWithWorkers.Workers[0].Experience;
+        var byExperience = orgWithWorkers.GetWorkerNamesWithMinExperience(minExperience);
+        Console.WriteLine($"\nИмена рабочих со стажем не меньше {minExperience}:");
+        Console.WriteLine(byExperience.Length > 0 ? string.Join(", ", byExperience) : "не найдено");
+
+        string workshop = orgWithWorkers.Workers[0].Workshop;
+        var byWorkshop = orgWithWorkers.GetWorkerNamesByWorkshop(workshop);
+        Console.WriteLine($"\nИмена рабочих цеха '{workshop}':");
+        Console.WriteLine(byWorkshop.Length > 0 ? string.Join(", ", byWorkshop) : "не найдено");
+
+        string profession = orgWithWorkers.Workers[0].Profession;
+        var byProfession = orgWithWorkers.GetWorkerNamesByProfession(profession);
+        Console.WriteLine($"\nИмена рабочих профессии '{profession}':");
+        Console.WriteLine(byProfession.Length > 0 ? string.Join(", ", byProfession) : "не найдено");
+
         Console.WriteLine("\n=== Task 6: массив типа IInit ===\n");
 
         var initArray = new IInit[5];
@@ -93,8 +118,6 @@ public class Program
         Console.WriteLine($"\nКлон равен оригиналу (учтены поля Dock): {clone.Equals(dock)}");
         Console.WriteLine($"ShallowCopy равен оригиналу: {shallow.Equals(dock)}");
         Console.WriteLine($"Клон — отдельный объект (не та же ссылка): {!ReferenceEquals(clone, dock)}");
-        Console.WriteLine("Все поля — значения/строки, поэтому клон и поверхностная копия совпадают по содержимому.");
-        Console.WriteLine("Разница видна при ссылочных полях: ShallowCopy() делит ссылки (MemberwiseClone), Clone() копирует их.");
     }
 
     static void PrintArray(Organisation[] array)

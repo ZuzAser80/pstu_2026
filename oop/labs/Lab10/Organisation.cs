@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Data.SqlTypes;
+using System.Linq;
 using LabsUtil;
 
 namespace Lab10
 {
     public class Organisation : IComparable, IInit, ICloneable
     {
-
         public string Address { get; private set; }
         private string _name = "";
         public string Name
@@ -23,6 +23,8 @@ namespace Lab10
             }
         }
         public int AnnualMoneyEarned { get; private set; }
+        public Worker[] Workers { get; private set; }
+        public int WorkerCount => Workers.Length;
 
         protected Random random = new();
 
@@ -32,13 +34,15 @@ namespace Lab10
         {
             Address = "";
             Name = "placeholder";
+            Workers = [];
         }
 
-        public Organisation(string address, string name, int moneyearned)
+        public Organisation(string address, string name, int money, Worker[]? workers = null)
         {
             Address = address;
             Name = name;
-            AnnualMoneyEarned = moneyearned;
+            AnnualMoneyEarned = money;
+            Workers = workers ?? [];
         }
 
         public Organisation(Organisation mold)
@@ -46,9 +50,34 @@ namespace Lab10
             Address = mold.Address;
             Name = mold.Name;
             AnnualMoneyEarned = mold.AnnualMoneyEarned;
+            Workers = mold.Workers.Select(worker => new Worker(worker)).ToArray();
         }
 
         #endregion
+
+        public string[] GetWorkerNamesWithMinExperience(int minExperience)
+        {
+            return Workers
+                .Where(worker => worker.Experience >= minExperience)
+                .Select(worker => worker.Name)
+                .ToArray();
+        }
+
+        public string[] GetWorkerNamesByWorkshop(string workshop)
+        {
+            return Workers
+                .Where(worker => worker.Workshop == workshop)
+                .Select(worker => worker.Name)
+                .ToArray();
+        }
+
+        public string[] GetWorkerNamesByProfession(string profession)
+        {
+            return Workers
+                .Where(worker => worker.Profession == profession)
+                .Select(worker => worker.Name)
+                .ToArray();
+        }
 
         public virtual void Show()
         {
@@ -64,6 +93,7 @@ namespace Lab10
             Name = name;
             Address = address;
             AnnualMoneyEarned = money;
+            Workers = [];
         }
 
         public virtual void RandomInit()
@@ -71,9 +101,19 @@ namespace Lab10
             Name = System.Guid.NewGuid().ToString();
             Address = System.Guid.NewGuid().ToString();
             AnnualMoneyEarned = random.Next(100, 10000);
+            int workerCount = random.Next(1, 15);
+            Workers = new Worker[workerCount];
+            for (int i = 0; i < workerCount; i++)
+            {
+                Workers[i] = new Worker(
+                    System.Guid.NewGuid().ToString(),
+                    random.Next(0, 40),
+                    System.Guid.NewGuid().ToString(),
+                    System.Guid.NewGuid().ToString());
+            }
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType())
             {
@@ -85,12 +125,12 @@ namespace Lab10
                 return false;
             }
 
-            return true;
+            return other.Workers.SequenceEqual(Workers);
         }
 
         public override int GetHashCode()
         {
-            throw new NotImplementedException();
+            return Name.GetHashCode() * 17 + this.WorkerCount.GetHashCode();
         }
 
         public int CompareTo(object? obj)
@@ -106,9 +146,10 @@ namespace Lab10
         {
             return (Organisation)this.MemberwiseClone();
         }
+
         public virtual object Clone()
         {
-            return new Organisation("Клон " + this.Name, this.Address, this.AnnualMoneyEarned);
+            return new Organisation("Клон " + this.Name, this.Address, this.AnnualMoneyEarned, this.Workers.Select(worker => new Worker(worker)).ToArray());
         }
     }
 

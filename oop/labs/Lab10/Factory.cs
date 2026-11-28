@@ -3,28 +3,24 @@ namespace Lab10
     public class Factory : Organisation
     {
         public ProductTypeEnum ProductType { get; private set; }
-        public int WorkerCount { get; private set; }
         public int EngineerCount { get; private set; }
 
         public Factory() : base()
         {
             ProductType = ProductTypeEnum.NONE;
-            WorkerCount = 0;
             EngineerCount = 0;
         }
 
         public Factory(string address, string name, int money,
-            ProductTypeEnum productType, int workers, int engineers) : base(address, name, money)
+            ProductTypeEnum productType, Worker[] workers, int engineers) : base(address, name, money, workers)
         {
             ProductType = productType;
-            WorkerCount = workers;
             EngineerCount = engineers;
         }
 
         public Factory(Factory mold) : base(mold)
         {
             ProductType = mold.ProductType;
-            WorkerCount = mold.WorkerCount;
             EngineerCount = mold.EngineerCount;
         }
 
@@ -37,7 +33,6 @@ namespace Lab10
         {
             base.Init();
             ProductType = ProductTypeEnum.NONE;
-            WorkerCount = 0;
             EngineerCount = 0;
         }
 
@@ -45,17 +40,15 @@ namespace Lab10
         {
             base.RandomInit();
             ProductType = (ProductTypeEnum)random.Next(0, 5);
-            WorkerCount = random.Next(1, 15);
             EngineerCount = random.Next(0, 20);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
-            if (base.Equals(obj))
+            if (obj is Factory other && base.Equals(other))
             {
-                return ((Factory)obj).WorkerCount == WorkerCount
-                && ((Factory)obj).ProductType == ProductType
-                && ((Factory)obj).EngineerCount == EngineerCount;
+                return other.ProductType == ProductType
+                    && other.EngineerCount == EngineerCount;
             }
             return false;
         }

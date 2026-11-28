@@ -104,7 +104,7 @@ public class SortingAndSearchTests
         [
             new Library("address", "Charlie", 300, BookGenresEnum.FICTION, 10, 2),
             new Dock("address", "Alpha", 100, ShipTypeEnum.CARGO, 3, 900.0),
-            new Factory("address", "Bravo", 200, ProductTypeEnum.FOOD, 5, 1),
+            new Factory("address", "Bravo", 200, ProductTypeEnum.FOOD, [], 1),
         ];
 
         Array.Sort(array, comparer);

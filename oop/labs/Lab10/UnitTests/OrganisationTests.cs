@@ -12,27 +12,33 @@ public class OrganisationTests
         Assert.Equal("placeholder", original.Name);
         Assert.Equal("", original.Address);
         Assert.Equal(0, original.AnnualMoneyEarned);
+        Assert.Empty(original.Workers);
     }
 
     [Fact]
-    public void FullConstructor_AssignsAllThreeFields()
+    public void FullConstructor_AssignsAllFields()
     {
-        var original = new Organisation("Saint Petersburg", "MoyDock", 500_000);
+        var workers = new[] { new Worker("Ivan", 5, "Welding", "Welder") };
+        var original = new Organisation("Saint Petersburg", "MoyDock", 500_000, workers);
 
         Assert.Equal("Saint Petersburg", original.Address);
         Assert.Equal("MoyDock", original.Name);
         Assert.Equal(500_000, original.AnnualMoneyEarned);
+        Assert.Equal(workers, original.Workers);
     }
 
     [Fact]
-    public void CopyConstructor_CopiesAllThreeFields()
+    public void CopyConstructor_CopiesAllFields()
     {
-        var mold = new Organisation("address", "name", 100);
+        var workers = new[] { new Worker("Ivan", 5, "Welding", "Welder") };
+        var mold = new Organisation("address", "name", 100, workers);
         var copy = new Organisation(mold);
 
         Assert.Equal(mold.Address, copy.Address);
         Assert.Equal(mold.Name, copy.Name);
         Assert.Equal(mold.AnnualMoneyEarned, copy.AnnualMoneyEarned);
+        Assert.Equal(mold.Workers, copy.Workers);
+        Assert.NotSame(mold.Workers, copy.Workers);
     }
 
     [Fact]
@@ -50,35 +56,27 @@ public class OrganisationTests
     #region Name validation
 
     [Fact]
-    public void EmptyName_PrintsWarningAndLeavesNameEmpty()
+    public void EmptyName_IsRejected_AndLeavesNameUnchanged()
     {
-        Organisation original = null!;
+        var original = new Organisation("address", "", 100);
 
-        var output = ConsoleCapture.Capture(() => original = new Organisation("address", "", 100));
-
-        Assert.Contains("Tried setting an empty name", output);
         Assert.Equal("", original.Name);
     }
 
     [Fact]
-    public void EmptyName_AbortsOnlyTheNameAssignment_NotTheRestOfTheConstructor()
+    public void EmptyName_DoesNotPreventAssigningOtherFields()
     {
-        Organisation original = null!;
-
-        ConsoleCapture.Capture(() => original = new Organisation("address", "", 100));
+        var original = new Organisation("address", "", 100);
 
         Assert.Equal("address", original.Address);
         Assert.Equal(100, original.AnnualMoneyEarned);
     }
 
     [Fact]
-    public void NonEmptyName_PrintsNoWarning()
+    public void NonEmptyName_IsAssigned()
     {
-        Organisation original = null!;
+        var original = new Organisation("address", "name", 100);
 
-        var output = ConsoleCapture.Capture(() => original = new Organisation("address", "name", 100));
-
-        Assert.DoesNotContain("Tried setting an empty name", output);
         Assert.Equal("name", original.Name);
     }
 
@@ -160,6 +158,15 @@ public class OrganisationTests
     {
         var first = new Organisation("address", "name", 100);
         var second = new Organisation("address", "name", 200);
+
+        Assert.False(first.Equals(second));
+    }
+
+    [Fact]
+    public void Equals_WithDifferentWorkers_ReturnsFalse()
+    {
+        var first = new Organisation("address", "name", 100, [new Worker("Ivan", 5, "Welding", "Welder")]);
+        var second = new Organisation("address", "name", 100, [new Worker("Ivan", 6, "Welding", "Welder")]);
 
         Assert.False(first.Equals(second));
     }
@@ -293,42 +300,51 @@ public class OrganisationTests
 
     #endregion
 
-    #region RandomInit
+    #region Worker queries
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    [InlineData(200)]
-    public void RandomInit_AlwaysKeepsMoneyInRangeAndSetsGuids(int iterations)
+    [Fact]
+    public void GetWorkerNamesWithMinExperience_ReturnsMatchingNames()
     {
-        var original = new Organisation();
+        var organisation = new Organisation("address", "name", 100,
+        [
+            new Worker("Ivan", 5, "Welding", "Welder"),
+            new Worker("Petr", 2, "Assembly", "Mechanic"),
+            new Worker("Anna", 10, "Welding", "Engineer"),
+        ]);
 
-        for (var i = 0; i < iterations; i++)
-        {
-            original.RandomInit();
+        var names = organisation.GetWorkerNamesWithMinExperience(5);
 
-            // random.Next(100, 10000) is upper-exclusive, so 9999 is the real maximum.
-            Assert.InRange(original.AnnualMoneyEarned, 100, 9999);
-            Assert.True(Guid.TryParse(original.Name, out _));
-            Assert.True(Guid.TryParse(original.Address, out _));
-        }
+        Assert.Equal(["Ivan", "Anna"], names);
     }
 
-    [Theory]
-    [InlineData(1)]
-    [InlineData(50)]
-    public void RandomInit_ProducesDistinctNameAndAddressEachCall(int iterations)
+    [Fact]
+    public void GetWorkerNamesByWorkshop_ReturnsMatchingNames()
     {
-        var original = new Organisation();
-        var seenNames = new List<string>();
+        var organisation = new Organisation("address", "name", 100,
+        [
+            new Worker("Ivan", 5, "Welding", "Welder"),
+            new Worker("Petr", 2, "Assembly", "Mechanic"),
+            new Worker("Anna", 10, "Welding", "Engineer"),
+        ]);
 
-        for (var i = 0; i < iterations; i++)
-        {
-            original.RandomInit();
-            seenNames.Add(original.Name);
-        }
+        var names = organisation.GetWorkerNamesByWorkshop("Welding");
 
-        Assert.Equal(iterations, seenNames.Distinct().Count());
+        Assert.Equal(["Ivan", "Anna"], names);
+    }
+
+    [Fact]
+    public void GetWorkerNamesByProfession_ReturnsMatchingNames()
+    {
+        var organisation = new Organisation("address", "name", 100,
+        [
+            new Worker("Ivan", 5, "Welding", "Welder"),
+            new Worker("Petr", 2, "Assembly", "Mechanic"),
+            new Worker("Anna", 10, "Welding", "Engineer"),
+        ]);
+
+        var names = organisation.GetWorkerNamesByProfession("Mechanic");
+
+        Assert.Equal(["Petr"], names);
     }
 
     #endregion
